@@ -1,0 +1,29 @@
+inicio > frase
+frase > sujeto predicado
+sujeto > articulo sustantivo sujetolist
+predicado > verbo sujetolist
+sujetolist > adjetivo sujetolist
+sujetolist > E
+articulo > el
+articulo > la
+articulo > los
+articulo > las
+sustantivo > niño
+sustantivo > niña
+sustantivo > coche
+sustantivo > casa
+sustantivo > perro
+sustantivo > gato
+sustantivo > brujita
+adjetivo > azul
+adjetivo > horrible
+adjetivo > enorme
+adjetivo > blanco
+adjetivo > negro
+adjetivo > tonto
+verbo > es
+verbo > vive
+verbo > corre
+verbo > ladra
+verbo > maulla
+verbo > esta
