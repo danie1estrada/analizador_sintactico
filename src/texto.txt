@@ -1,3 +1,6 @@
-el gato es negro ladra horrible
-la casa esta horrible
-el horrible
+{
+    A = 12;
+    A = B + C;
+    if (A == D)
+        E = A;
+}

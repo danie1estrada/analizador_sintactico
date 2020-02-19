@@ -1,3 +1,4 @@
+from data_table import DataTable
 from table import Table
 
 class AnalizadorLexico:
@@ -19,6 +20,7 @@ class AnalizadorLexico:
         self.tabla_simbolos = []
         self.tabla_errores = []
         self.tokens = []
+        self.id = 400
         self.leer_archivo()
 
     def leer_archivo(self):
@@ -58,7 +60,13 @@ class AnalizadorLexico:
                     estado_actual = 0
                     palabra += actual
                     # print('Caracter:', palabra)
-                    fila = ['Caracter simple', palabra, ord(palabra)]
+                    fila = {
+                        'lexeme': palabra,
+                        'token': 'special character',
+                        'type': 'special character',
+                        'value': ord(palabra)
+                    }
+                    # fila = ['Caracter simple', palabra, ord(palabra)]
                     # if fila not in self.tabla_simbolos:
                     self.tabla_simbolos.append(fila)
                     self.tokens.append(palabra)
@@ -80,6 +88,12 @@ class AnalizadorLexico:
                     estado_actual = 0
                     # print('Número entero:', palabra)
                     fila = ['Número entero', palabra, 260]
+                    fila = {
+                        'lexeme': palabra,
+                        'token': 'special character (number)',
+                        'type': 'special character (number)',
+                        'value': 270
+                    }
                     # if fila not in self.tabla_simbolos:
                     self.tabla_simbolos.append(fila)
                     self.tokens.append(palabra)
@@ -107,7 +121,13 @@ class AnalizadorLexico:
                 elif str.isspace(actual) or actual in self.caracteres_simples:
                     estado_actual = 0
                     # print('Número de punto flotante:', palabra)
-                    fila = ['Número de punto flotante', palabra, 270]
+                    #fila = ['Número de punto flotante', palabra, 270]
+                    fila = {
+                        'lexeme': palabra,
+                        'token': 'special character',
+                        'type': 'special character',
+                        'value': 270
+                    }
                     # if fila not in self.tabla_simbolos:
                     self.tabla_simbolos.append(fila)
                     self.tokens.append(palabra)
@@ -127,10 +147,26 @@ class AnalizadorLexico:
                     if palabra in self.palabras_reservadas:
                         # if [palabra] not in self.tabla_palabras_reservadas:
                         self.tabla_palabras_reservadas.append([palabra])
+                        fila = {
+                            'lexeme': palabra,
+                            'token': 'keyword',
+                            'type': 'keyword',
+                            'value': 300
+                        }
+                        # self.id += 1
+                        self.tabla_simbolos.append(fila)
                     else:
-                        identificador = ['Identificador', palabra, 280]
+                        # identificador = ['Identificador', palabra, 280]
                         # if identificador not in self.tabla_simbolos:
-                        self.tabla_simbolos.append(identificador)
+                        if next((item for item in self.tabla_simbolos if item['lexeme'] == palabra), None) == None:
+                            identificador = {
+                                'lexeme': palabra,
+                                'token': 'identifier',
+                                'type': 'int',
+                                'value': self.id
+                            }
+                            self.id += 1
+                            self.tabla_simbolos.append(identificador)
                     self.tokens.append(palabra)
                     palabra = ''
                     # i += 1
@@ -154,29 +190,30 @@ class AnalizadorLexico:
         return self.tokens.pop(0)
 
     def imprimir(self):
-        encabezado = ['Palabras reservadas']
-        ancho_cols = [20]
-        tabla = Table(encabezado, ancho_cols)
-        tabla.print_header()
-        for fila in self.tabla_palabras_reservadas:
-            tabla.add_row(fila)
-        tabla.print_line()
+        DataTable(['Lexeme', 'Token', 'Type', 'Value'], self.tabla_simbolos).print()
+        # encabezado = ['Palabras reservadas']
+        # ancho_cols = [20]
+        # tabla = Table(encabezado, ancho_cols)
+        # tabla.print_header()
+        # for fila in self.tabla_palabras_reservadas:
+        #     tabla.add_row(fila)
+        # tabla.print_line()
 
-        encabezado = ['Tipo', 'Nombre', 'Valor']
-        ancho_cols = [25, 20, 9]
-        tabla = Table(encabezado, ancho_cols)
-        tabla.print_header()
-        for fila in self.tabla_simbolos:
-            tabla.add_row(fila)
-        tabla.print_line()
+        # encabezado = ['Tipo', 'Nombre', 'Valor']
+        # ancho_cols = [25, 20, 9]
+        # tabla = Table(encabezado, ancho_cols)
+        # tabla.print_header()
+        # for fila in self.tabla_simbolos:
+        #     tabla.add_row(fila)
+        # tabla.print_line()
 
-        encabezado = ['Error', 'Línea', 'Columna']
-        ancho_cols = [15, 6, 8]
-        tabla = Table(encabezado, ancho_cols)
-        tabla.print_header()
-        for fila in self.tabla_errores:
-            tabla.add_row(fila)
-        tabla.print_line()
+        # encabezado = ['Error', 'Línea', 'Columna']
+        # ancho_cols = [15, 6, 8]
+        # tabla = Table(encabezado, ancho_cols)
+        # tabla.print_header()
+        # for fila in self.tabla_errores:
+        #     tabla.add_row(fila)
+        # tabla.print_line()
 
 
 def main():
